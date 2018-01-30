@@ -4,7 +4,8 @@
   "description": "Phone parser RESTful API web service with Node js",
   "main": "app.js",
   "scripts": {
-    "test": "jest --forceExit"
+    "test": "jest --forceExit",
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
