@@ -59,13 +59,13 @@ Phone number parser RESTful API web service.
 
 1. GET request `http://localhost:3000/api/phonenumbers/parse/text/{...string...}` allows a text to be parsed.
 
-    For example, requesting `/api/phonenumbers/parse/text/nothing` should return an empty list [].      
-    Whereas requesting requesting `/api/phonenumbers/parse/text/Seneca%20Phone%20Number%3A%20416-491-5050` should return a list with a single, formatted phone number ["(416) 491-5050"].
+    For example, requesting `http://localhost:3000/api/phonenumbers/parse/text/nothing` should return an empty list [].      
+    Whereas requesting `http://localhost:3000/api/phonenumbers/parse/text/Seneca%20Phone%20Number%3A%20416-491-5050` should return a list with a single, formatted phone number ["(416) 491-5050"].
 
 2. POST request `http://localhost:3000/api/phonenumbers/parse/file` with the body containing a base64 encoded text file, allows a file to be processed.
 
-Note 1: All responses from the API will be given in JSON format.     
-Note 2: Phone numbers returned from any of the endpoints above will not be duplicated.
+* Note 1: All responses from the API will be given in JSON format.     
+* Note 2: Phone numbers returned from any of the endpoints above will not be duplicated.
 
 ## Built With
 
