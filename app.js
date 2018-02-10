@@ -1,9 +1,4 @@
-// This software uses libphonenumber-js
-// Copyright (c) 2016 @catamphetamine <purecatamphetamine@gmail.com>
-// github.com/catamphetamine/libphonenumber-js
-
 const libphonenumberModule = require('libphonenumber-js');
-
 const express = require('express');
 const multer = require('multer');
 const fs = require('fs');
@@ -31,10 +26,10 @@ function isEmpty(obj) {
 }
 
 function phoneNumberParser(data) {
+  const re = /[A-Za-z_\s]/;
   let resultArray = [];
   let phoneNumber;
   let checkDuplicate = false;
-  const re = /[A-Za-z_\s]/;
   let arrayOfStrings = data.split(re);
   for (let i = 0; i < arrayOfStrings.length; i += 1) {
     phoneNumber = libphonenumberModule.parse(arrayOfStrings[i], 'CA');
@@ -56,8 +51,8 @@ function phoneNumberParser(data) {
   return resultArray;
 }
 
-app.get('/api/phonenumbers/parse/text/:name', function (req, res) {
-  let result = phoneNumberParser(req.params.name);
+app.get('/api/phonenumbers/parse/text/:string', function (req, res) {
+  let result = phoneNumberParser(req.params.string);
   res.status(200).json(result);
 });
 
@@ -80,7 +75,6 @@ app.post('/api/phonenumbers/parse/file', upload.single('file'), function (req, r
       if (err) throw err;
       let fileContent = Buffer.from(data, 'base64').toString();
       let result = phoneNumberParser(fileContent);
-      res.setHeader('Content-Type', 'text/plain');
       res.status(200).json(result);
     });
     // Deleting uploaded file
