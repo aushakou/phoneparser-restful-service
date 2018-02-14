@@ -26,11 +26,11 @@ function isEmpty(obj) {
 }
 
 function phoneNumberParser(data) {
-  const re = /[A-Za-z_\s]/;
+  const regexp = /[^\d\s-()\.\+]/;
   let resultArray = [];
   let phoneNumber;
   let checkDuplicate = false;
-  let arrayOfStrings = data.split(re);
+  let arrayOfStrings = data.split(regexp);
   for (let i = 0; i < arrayOfStrings.length; i += 1) {
     phoneNumber = libphonenumberModule.parse(arrayOfStrings[i], 'CA');
     if (!isEmpty(phoneNumber)) {
