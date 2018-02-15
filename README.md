@@ -62,7 +62,11 @@ Phone number parser RESTful API web service.
     For example, requesting `http://localhost:3000/api/phonenumbers/parse/text/nothing` should return an empty list [].      
     Whereas requesting `http://localhost:3000/api/phonenumbers/parse/text/Seneca%20Phone%20Number%3A%20416-491-5050` should return a list with a single, formatted phone number ["(416) 491-5050"].
 
-2. POST request `http://localhost:3000/api/phonenumbers/parse/file` with the body containing a base64 encoded text file, allows a file to be processed.
+2. GET request `http://localhost:3000/api/phonenumbers/url/http/?url={...URL...}` allows a resource at given URL to be parsed.
+    
+    For example, requesting `http://localhost:3000/api/phonenumbers/url/http/?url=http://www.senecacollege.ca/contact` should return a list with all numbers from Seneca College - Contact Us web page.
+
+3. POST request `http://localhost:3000/api/phonenumbers/parse/file` with the body containing a base64 encoded text file, allows a file to be processed.
 
 * Note 1: All responses from the API will be given in JSON format.     
 * Note 2: Phone numbers returned from any of the endpoints above will not be duplicated.

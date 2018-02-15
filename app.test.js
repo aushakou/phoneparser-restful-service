@@ -6,6 +6,7 @@ const address = 'http://localhost:3000';
 const postURL = '/api/phonenumbers/parse/file';
 const getUrlWithNumber = '/api/phonenumbers/parse/text/absds6474727272afa6475695656asdsad';
 const getUrlWithoutNumber = '/api/phonenumbers/parse/text/';
+const getUrlWithURL = '/api/phonenumbers/url/http/?url=http://www.senecacollege.ca/contact';
 
 describe('Testing GET requests:', () => {
 
@@ -22,6 +23,15 @@ describe('Testing GET requests:', () => {
       expect(response.text).toBe('[\"(647) 472-7272\",\"(647) 569-5656\"]');
     });
   });
+
+  test('GET request with URL containing URL of the resource', () => {
+    return request(address).get(getUrlWithURL).then(response => {
+      expect(response.statusCode).toBe(200);
+      expect(response.text).toBe('[\"(416) 491-5050\",\"(416) 491-8811\",\"(905) 833-1650\"]');
+    });
+  });
+
+  
 
 });
 
