@@ -3,7 +3,7 @@ const express = require('express');
 const multer = require('multer');
 const fs = require('fs');
 const request = require('request');
-var valid_url = require('valid-url');
+const valid_url = require('valid-url');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -74,7 +74,7 @@ app.get('/api/phonenumbers/url/http/', function (req, res) {
   }else{
     res.status(400).end();
   }
-  
+
 });
 
 app.get('/api/phonenumbers/parse/text/:string', function (req, res) {
