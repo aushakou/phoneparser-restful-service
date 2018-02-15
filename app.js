@@ -2,6 +2,8 @@ const libphonenumberModule = require('libphonenumber-js');
 const express = require('express');
 const multer = require('multer');
 const fs = require('fs');
+const request = require('request');
+var valid_url = require('valid-url');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -50,6 +52,30 @@ function phoneNumberParser(data) {
   }
   return resultArray;
 }
+
+app.get('/api/phonenumbers/url/http/', function (req, res) {
+  let url = req.query.url;
+  let result;
+
+  if(valid_url.isWebUri(url)){
+    request({
+      uri: url,
+    }, function(error, response, body) {
+      
+      if(error){
+        res.status(400).end();
+      } else if(response.statusCode != 200){
+        res.status(400).end();
+      } else{
+        result = phoneNumberParser(body);
+        res.status(200).json(result);
+      }
+    });
+  }else{
+    res.status(400).end();
+  }
+  
+});
 
 app.get('/api/phonenumbers/parse/text/:string', function (req, res) {
   let result = phoneNumberParser(req.params.string);
