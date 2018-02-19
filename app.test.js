@@ -4,6 +4,7 @@ const fs = require('fs');
 
 const address = 'http://localhost:3000';
 const postURL = '/api/phonenumbers/parse/file';
+const postURLDoc = '/api/phonenumbers/parse/doc';
 const getUrlWithNumber = '/api/phonenumbers/parse/text/absds6474727272afa6475695656asdsad';
 const getUrlWithoutNumber = '/api/phonenumbers/parse/text/';
 const getUrlWithURL = '/api/phonenumbers/url/http/?url=http://www.senecacollege.ca/contact';
@@ -56,6 +57,17 @@ describe('Testing POST requests:', () => {
       .then(response => {
         expect(response.statusCode).toBe(200);
         expect(response.text).toBe('[]');
+    });
+  });
+
+  test('POST request with MS Word file containing valid numbers', () => {
+    return request(address)
+      .post(postURLDoc)
+      .set('Content-Type', 'application/octet-stream')
+      .attach('file', fs.readFileSync('./test_input.docx'), 'testfile3.txt')
+      .then(response => {
+        expect(response.statusCode).toBe(200);
+        expect(response.text).toBe('[\"(416) 491-5050\",\"(416) 491-8811\",\"(905) 833-1650\"]');
     });
   });
 
