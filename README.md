@@ -68,6 +68,8 @@ Phone number parser RESTful API web service.
 
 3. POST request `http://localhost:3000/api/phonenumbers/parse/file` with the body containing a base64 encoded text file, allows a file to be processed.
 
+4. POST request `http://localhost:3000/api/phonenumbers/parse/doc` with the body containing a MS Word file, allows a file to be processed.
+
 * Note 1: All responses from the API will be given in JSON format.     
 * Note 2: Phone numbers returned from any of the endpoints above will not be duplicated.
 
