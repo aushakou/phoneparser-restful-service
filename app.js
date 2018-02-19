@@ -4,6 +4,7 @@ const multer = require('multer');
 const fs = require('fs');
 const request = require('request');
 const valid_url = require('valid-url');
+const mammoth = require('mammoth');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -95,12 +96,29 @@ app.get('*', function (req, res) {
 app.post('/api/phonenumbers/parse/file', upload.single('file'), function (req, res) {
   if (!req.file) {
     // No file received
+    console.log('file not received');
     res.status(400).end();
   } else {
     fs.readFile(req.file.path, 'utf8', (err, data) => {
       if (err) throw err;
       let fileContent = Buffer.from(data, 'base64').toString();
       let result = phoneNumberParser(fileContent);
+      res.status(200).json(result);
+    });
+    // Deleting uploaded file
+    fs.unlink(req.file.path, (err, data) => {
+      if (err) throw err;
+    });
+  }
+});
+
+app.post('/api/phonenumbers/parse/doc', upload.single('file'), function (req, res) {
+  if (!req.file) {
+    // No file received
+    res.status(400).end();
+  } else {
+    mammoth.extractRawText({path: req.file.path}).then((data) => {
+      let result = phoneNumberParser(data.value);
       res.status(200).json(result);
     });
     // Deleting uploaded file
