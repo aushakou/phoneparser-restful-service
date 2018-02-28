@@ -5,7 +5,6 @@ const fs = require('fs');
 const request = require('request');
 const valid_url = require('valid-url');
 const mammoth = require('mammoth');
-
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, '.');
@@ -14,8 +13,14 @@ const storage = multer.diskStorage({
     cb(null, 'file-to-be-parsed');
   },
 });
-
 const upload = multer({ storage: storage });
+const path = require("path");
+const tesseractjs = require('tesseract.js');
+const Tesseract = tesseractjs.create({
+  workerPath: path.join(__dirname, './node_modules/tesseract.js/src/node/worker.js'),
+  langPath: path.join('./eng.traineddata'),
+  corePath: path.join(__dirname, './node_modules/tesseract.js/src/index.js')
+});
 
 const app = express();
 
@@ -86,6 +91,26 @@ app.get('/api/phonenumbers/parse/text/:string', function (req, res) {
 app.get('/api/phonenumbers/parse/text/', function (req, res) {
   let result = [];
   res.status(200).json(result);
+});
+
+app.post('/api/phonenumbers/parse/image', upload.single('file'), function (req, res) {
+  if (!req.file) {
+    // No file attached
+    res.status(400).end();
+  } else {
+    var fileType = (req.file.mimetype).split('/');
+    if (fileType[0] !== 'image') {
+      // Uploaded file is not an image
+      res.status(400).end();
+    } else {
+      Tesseract.recognize(req.file.path)
+        .then(function (result) { res.status(200).json(phoneNumberParser(result.text)); })
+    }
+    // Deleting uploaded file
+    fs.unlink(req.file.path, (err, data) => {
+      if (err) throw err;
+    });
+  }
 });
 
 app.get('*', function (req, res) {
