@@ -5,6 +5,7 @@ const fs = require('fs');
 const address = 'http://localhost:3000';
 const postURL = '/api/phonenumbers/parse/file';
 const postURLDoc = '/api/phonenumbers/parse/doc';
+const postUrlImage = '/api/phonenumbers/parse/image';
 const getUrlWithNumber = '/api/phonenumbers/parse/text/absds6474727272afa6475695656asdsad';
 const getUrlWithoutNumber = '/api/phonenumbers/parse/text/';
 const getUrlWithURL = '/api/phonenumbers/url/http/?url=http://www.senecacollege.ca/contact';
@@ -31,8 +32,6 @@ describe('Testing GET requests:', () => {
       expect(response.text).toBe('[\"(416) 491-5050\",\"(416) 491-8811\",\"(905) 833-1650\"]');
     });
   });
-
-  
 
 });
 
@@ -71,4 +70,39 @@ describe('Testing POST requests:', () => {
     });
   });
 
+  test('POST request with image 1 containing valid numbers', () => {
+    // not sure if jest.setTimeout() is a good solution. Need to rethink
+    jest.setTimeout(20000);
+    return request(address)
+      .post(postUrlImage)
+      .attach('file', fs.readFileSync('./images-for-testing/test_image_seneca_contacts.jpg'), 'testImage.jpg')
+      .then(response => {
+        expect(response.statusCode).toBe(200);
+        expect(response.text).toBe('[\"(416) 491-5050\",\"(416) 491-8811\",\"(905) 833-1650\"]');
+      });
+  });
+
+  test('POST request with image 2 containing valid numbers', () => {
+    // not sure if jest.setTimeout() is a good solution. Need to rethink
+    jest.setTimeout(20000);
+    return request(address)
+      .post(postUrlImage)
+      .attach('file', fs.readFileSync('./images-for-testing/test_image_ctv_contacts.jpg'), 'testImage.jpg')
+      .then(response => {
+        expect(response.statusCode).toBe(200);
+        expect(response.text).toBe('[\"(416) 384-5000\",\"(866) 690-6179\",\"(800) 668-0060\",\"(800) 461-1542\"]');
+      });
+  });
+
+  test('POST request with image 3 containing valid numbers', () => {
+    // not sure if jest.setTimeout() is a good solution. Need to rethink
+    jest.setTimeout(20000);
+    return request(address)
+      .post(postUrlImage)
+      .attach('file', fs.readFileSync('./images-for-testing/test_image_toronto_zoo_contacts.jpg'), 'testImage.jpg')
+      .then(response => {
+        expect(response.statusCode).toBe(200);
+        expect(response.text).toBe('[\"(416) 392-5900\",\"(416) 392-5934\",\"(416) 392-9114\",\"(416) 392-9115\",\"(416) 392-5962\",\"(416) 392-4979\",\"(416) 392-5940\",\"(416) 392-5863\",\"(416) 392-5947\",\"(416) 392-5948\",\"(416) 392-5932\",\"(416) 392-5944\",\"(416) 392-5924\",\"(416) 393-6364\",\"(416) 392-5929\",\"(416) 393-6339\",\"(416) 392-5905\",\"(416) 392-9101\"]');
+      });
+  });
 });
