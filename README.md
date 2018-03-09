@@ -38,43 +38,31 @@ Phone number parser RESTful API web service.
         Server started on port 3000...
         ```
 
-## Running the tests
+## Testing
 
 * This project uses [Jest](https://facebook.github.io/jest/) for testing.
 
-1. Run the test:
+1. Run the tests from the project's directory:
     ```bash
     npm test
-    ```
-2. Jest will print the following message if tests pass:
-    ```bash
-    PASS  .\app.test.js
-        Testing GET requests:
-            √ GET request with empty URL
-            √ GET request with URL containing valid numbers
-        Testing POST requests:
-            √ POST request with file containing valid numbers
-            √ POST request with file containing invalid numbers
-    Test Suites: 1 passed, 1 total
-    Tests:       4 passed, 4 total        
     ```
 
 ## Usage
 
-1. GET request `http://localhost:3000/api/phonenumbers/parse/text/{...string...}` allows a text to be parsed.
+1. **GET** request `http://localhost:3000/api/phonenumbers/parse/text/{...string...}` allows a text to be parsed.
 
     For example, requesting `http://localhost:3000/api/phonenumbers/parse/text/nothing` should return an empty list [].      
     Whereas requesting `http://localhost:3000/api/phonenumbers/parse/text/Seneca%20Phone%20Number%3A%20416-491-5050` should return a list with a single, formatted phone number ["(416) 491-5050"].
 
-2. GET request `http://localhost:3000/api/phonenumbers/url/http/?url={...URL...}` allows a resource at given URL to be parsed.
+2. **GET** request `http://localhost:3000/api/phonenumbers/url/http/?url={...URL...}` allows a resource at given URL to be parsed.
     
     For example, requesting `http://localhost:3000/api/phonenumbers/url/http/?url=http://www.senecacollege.ca/contact` should return a list with all numbers from Seneca College - Contact Us web page.
 
-3. POST request `http://localhost:3000/api/phonenumbers/parse/file` with the body containing a base64 encoded text file, allows a file to be processed.
+3. **POST** request `http://localhost:3000/api/phonenumbers/parse/file` with the body containing a base64 encoded text file, allows a file to be processed.
 
-4. POST request `http://localhost:3000/api/phonenumbers/parse/doc` with the body containing a MS Word file, allows a file to be processed.
+4. **POST** request `http://localhost:3000/api/phonenumbers/parse/doc` with the body containing a MS Word file, allows a file to be processed.
 
-5. POST request `http://localhost:3000/api/phonenumbers/parse/image` with the body containing an image file.
+5. **POST** request `http://localhost:3000/api/phonenumbers/parse/image` with the body containing an image file.
 
 * Note 1: All responses from the API will be given in JSON format.     
 * Note 2: Phone numbers returned from any of the endpoints above will not be duplicated.
