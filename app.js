@@ -3,7 +3,7 @@ const express = require('express');
 const multer = require('multer');
 const fs = require('fs');
 const request = require('request');
-const valid_url = require('valid-url');
+const validUrl = require('valid-url');
 const mammoth = require('mammoth');
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -62,25 +62,17 @@ function phoneNumberParser(data) {
 app.get('/api/phonenumbers/url/http/', function (req, res) {
   let url = req.query.url;
   let result;
-
-  if(valid_url.isWebUri(url)){
-    request({
-      uri: url,
-    }, function(error, response, body) {
-      
-      if(error){
-        res.status(400).end();
-      } else if(response.statusCode != 200){
-        res.status(400).end();
-      } else{
-        result = phoneNumberParser(body);
-        res.status(200).json(result);
-      }
-    });
-  }else{
+  if (!validUrl.isWebUri(url)) {
     res.status(400).end();
   }
-
+  request({ uri: url }, function (error, response, body) {
+    if (error || response.statusCode != 200) {
+      res.status(400).end();
+    } else {
+      result = phoneNumberParser(body);
+      res.status(200).json(result);
+    }
+  });
 });
 
 app.get('/api/phonenumbers/parse/text/:string', function (req, res) {
@@ -107,8 +99,9 @@ app.post('/api/phonenumbers/parse/image', upload.single('file'), function (req, 
         .then(function (result) { res.status(200).json(phoneNumberParser(result.text)); })
     }
     // Deleting uploaded file
+    // May be this function should be invoked before the response
     fs.unlink(req.file.path, (err, data) => {
-      if (err) throw err;
+      console.log(err);
     });
   }
 });
@@ -131,8 +124,9 @@ app.post('/api/phonenumbers/parse/file', upload.single('file'), function (req, r
       res.status(200).json(result);
     });
     // Deleting uploaded file
+    // May be this function should be invoked before the response
     fs.unlink(req.file.path, (err, data) => {
-      if (err) throw err;
+      console.log(err);
     });
   }
 });
@@ -142,13 +136,16 @@ app.post('/api/phonenumbers/parse/doc', upload.single('file'), function (req, re
     // No file received
     res.status(400).end();
   } else {
-    mammoth.extractRawText({path: req.file.path}).then((data) => {
+    mammoth.extractRawText({ path: req.file.path }).then((data) => {
       let result = phoneNumberParser(data.value);
       res.status(200).json(result);
     });
     // Deleting uploaded file
+    // May be this function should be invoked before the response
     fs.unlink(req.file.path, (err, data) => {
-      if (err) throw err;
+      if (err) {
+        console.log(err);
+      }
     });
   }
 });
