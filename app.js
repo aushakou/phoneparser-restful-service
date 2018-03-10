@@ -101,7 +101,9 @@ app.post('/api/phonenumbers/parse/image', upload.single('file'), function (req, 
     // Deleting uploaded file
     // May be this function should be invoked before the response
     fs.unlink(req.file.path, (err, data) => {
-      console.log(err);
+      if (err) {
+        console.log(err);
+      }
     });
   }
 });
@@ -126,7 +128,9 @@ app.post('/api/phonenumbers/parse/file', upload.single('file'), function (req, r
     // Deleting uploaded file
     // May be this function should be invoked before the response
     fs.unlink(req.file.path, (err, data) => {
-      console.log(err);
+      if (err) {
+        console.log(err);
+      }
     });
   }
 });
