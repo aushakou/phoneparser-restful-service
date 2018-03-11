@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest --forceExit",
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "lint": "eslint **/*.js"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,9 @@
     "valid-url": "^1.0.9"
   },
   "devDependencies": {
+    "eslint": "^4.18.2",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.9.0",
     "jest": "^22.1.4",
     "nodemon": "^1.17.1",
     "supertest": "^3.0.0"
