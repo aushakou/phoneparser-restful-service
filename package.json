@@ -4,10 +4,11 @@
   "description": "Phone parser RESTful API web service with Node js",
   "main": "app.js",
   "scripts": {
-    "test": "jest --forceExit",
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "lint": "eslint **/*.js"
+    "jest": "jest --forceExit",
+    "lint": "eslint **/*.js",
+    "test": "npm run lint && npm run jest"
   },
   "repository": {
     "type": "git",
